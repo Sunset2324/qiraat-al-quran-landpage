@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-cream text-ink font-sans antialiased;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FBF8F1;
+}
+::-webkit-scrollbar-thumb {
+  background: #2F7A5C;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #1F5C45;
+}
+
+/* Arabic font helper */
+.font-arabic {
+  font-family: 'Amiri', serif;
+}
