@@ -37,8 +37,8 @@ export default function Hero() {
 
             {/* Subheadline */}
             <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-muted lg:mx-0">
-              Experience the Quran with recitations from dozens of world-renowned qaris,
-              an automatic &lsquo;follow-along&rsquo; reading feature, and dynamic prayer schedules.
+              Read and listen with many reciters, follow each verse as it plays,
+              check prayer times for your city, and study tajweed and prophetic medicine.
             </p>
 
             {/* CTA buttons */}
@@ -70,9 +70,9 @@ export default function Hero() {
               <div className="h-4 w-px bg-ink/10" />
               <div className="flex items-center gap-2">
                 <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald/10">
-                  <span className="text-[10px] font-bold text-emerald">30+</span>
+                  <span className="text-[9px] font-bold text-emerald">3</span>
                 </div>
-                <span className="text-sm text-muted">World-Class Qaris</span>
+                <span className="text-sm text-muted">Languages: ID · EN · AR</span>
               </div>
             </div>
           </motion.div>

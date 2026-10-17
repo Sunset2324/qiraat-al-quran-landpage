@@ -1,21 +1,37 @@
 import { motion } from 'framer-motion';
-import { Headphones, BookOpen, Clock } from 'lucide-react';
+import { Headphones, BookOpen, Clock, Palette, HeartPulse, Languages } from 'lucide-react';
 
 const features = [
   {
     icon: Headphones,
-    title: 'Dozens of World-Class Qaris',
-    description: 'Choose from the Quranpedia catalog of reciters, featuring verse-by-verse audio synchronization.',
+    title: 'Follow Along, Verse by Verse',
+    description:
+      'Pick from many Quranpedia reciters. Each verse plays in turn and is highlighted as you listen, and it keeps playing in the background with a media notification.',
   },
   {
     icon: BookOpen,
-    title: 'Follow Along Automatically',
-    description: 'Verses are highlighted with real-time auto-scrolling as the murottal (recitation) plays.',
+    title: 'Qiraat & Mushaf Selection',
+    description: 'Switch between mushafs and riwayat, then read and listen in the qiraat you study.',
   },
   {
     icon: Clock,
-    title: 'Dynamic Prayer Schedule',
-    description: 'Accurate adhan (call to prayer) notifications based on your location, with a global API fallback.',
+    title: 'Prayer Times for Your City',
+    description: 'Choose your city once and the dashboard shows the next prayer with a live countdown, plus dhikr and du’a after prayer.',
+  },
+  {
+    icon: Palette,
+    title: 'Tajweed Guide',
+    description: 'Learn the rules with color-coded explanations, from madd and idgham to qalqalah.',
+  },
+  {
+    icon: HeartPulse,
+    title: 'Prophetic Medicine',
+    description: 'Over 560 themes linking Qur’anic verses to health and well-being, with the verse text shown in place.',
+  },
+  {
+    icon: Languages,
+    title: 'Indonesian, English & Arabic',
+    description: 'The whole interface follows your language, with right-to-left layout for Arabic and offline caching of what you have read.',
   },
 ];
 

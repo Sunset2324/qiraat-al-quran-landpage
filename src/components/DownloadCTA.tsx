@@ -39,7 +39,7 @@ export default function DownloadCTA() {
             </a>
 
             <p className="mt-4 text-sm text-cream/60">
-              Free download · Android 5.0+ · 24 MB
+              Free download · Android APK
             </p>
           </div>
         </motion.div>

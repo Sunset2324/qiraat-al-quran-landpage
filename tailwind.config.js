@@ -5,6 +5,10 @@ export default {
     extend: {
       colors: {
         cream: '#FBF8F1',
+        // Palet dari app (ThemeContext light)
+        paper: '#FBF8EF',
+        card: '#FFFCF5',
+        sand: '#DCCB9C',
         ink: '#211D16',
         muted: '#6B6558',
         emerald: {
