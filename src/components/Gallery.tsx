@@ -1,7 +1,10 @@
 import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
 import Phone from './mock/Phone';
-import { DashboardScreen, SurahScreen, QiraatScreen, ThibbunScreen } from './mock/screens';
+import {
+  DashboardScreen, SurahScreen, QiraatScreen, ThibbunScreen,
+  PrayerScreen, DhikrScreen, QiblaScreen, HistoryScreen,
+} from './mock/screens';
 
 const screenshots: { label: string; sublabel: string; alt: string; screen: ReactNode }[] = [
   {
@@ -27,6 +30,30 @@ const screenshots: { label: string; sublabel: string; alt: string; screen: React
     sublabel: 'Qur’anic verses on health, organized by theme',
     alt: 'Prophetic medicine theme list',
     screen: <ThibbunScreen />,
+  },
+  {
+    label: 'Prayer Times & Qibla',
+    sublabel: 'Live countdown with a real-time Qibla compass right in the card',
+    alt: 'Prayer times screen with Qibla compass',
+    screen: <PrayerScreen />,
+  },
+  {
+    label: 'Dhikr Counter',
+    sublabel: 'Count to 3 or 33 with a short tap delay, so nothing is counted twice',
+    alt: 'Dhikr detail with a 33 counter',
+    screen: <DhikrScreen />,
+  },
+  {
+    label: 'Qibla Direction',
+    sublabel: 'Full-size compass with bearing, distance to the Ka’bah and sensor accuracy',
+    alt: 'Qibla detail screen',
+    screen: <QiblaScreen />,
+  },
+  {
+    label: 'Reading History',
+    sublabel: 'Pick up right where you stopped, on the exact verse',
+    alt: 'Reading history screen',
+    screen: <HistoryScreen />,
   },
 ];
 

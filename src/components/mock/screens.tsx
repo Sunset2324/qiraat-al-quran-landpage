@@ -1,20 +1,21 @@
 import { useEffect, useState } from 'react';
 import {
   MapPin, CloudSun, FileText, Home, BookOpen, History, Settings, ArrowLeft, Info,
-  Search, Play, Pause, Heart, Activity, Sparkles, Moon, ChevronDown,
+  Search, Play, Pause, Heart, Activity, Sparkles, Moon, ChevronDown, Clock, RotateCcw, Navigation, ChevronRight, Trash2,
 } from 'lucide-react';
 import { StatusBar } from './Phone';
+import Compass from './Compass';
 
 const MUTED = 'text-[#6B6558]';
 const BORDER = 'border-sand';
 
 /* ---------- Dashboard ---------- */
 const FEATURES = [
-  { label: 'Qiraat', icon: '/app/qiraat.png' },
-  { label: "Dhikr & Du'a", icon: '/app/dzikir.png' },
-  { label: 'Prayer Times', icon: '/app/jadwal.png' },
-  { label: 'Tajweed', icon: '/app/tajweed.png' },
-  { label: 'Prophetic Medicine', icon: '/app/thibbun.png' },
+  { label: 'Qiraat', icon: '/qiraat.png' },
+  { label: "Dhikr & Du'a", icon: '/dzikir.png' },
+  { label: 'Prayer Times', icon: '/jadwal.png' },
+  { label: 'Tajweed', icon: '/tajweed.png' },
+  { label: 'Prophetic Medicine', icon: '/thibbun.png' },
 ];
 
 function TabBar({ active }: { active: 0 | 1 | 2 | 3 }) {
@@ -276,6 +277,226 @@ export function ThibbunScreen() {
           </p>
         </div>
       </div>
+    </>
+  );
+}
+
+/* ---------- Prayer Times (kartu Lokasi & Countdown + kompas kiblat) ---------- */
+export function PrayerScreen() {
+  const [sec, setSec] = useState(2 * 3600 + 40 * 60 + 5);
+  const [heading, setHeading] = useState(262);
+  useEffect(() => {
+    const id = setInterval(() => setSec((x) => (x > 0 ? x - 1 : 0)), 1000);
+    return () => clearInterval(id);
+  }, []);
+  useEffect(() => {
+    // kompas "hidup": heading bergoyang pelan di sekitar arah kiblat
+    let t = 0;
+    const id = setInterval(() => {
+      t += 0.12;
+      setHeading(280 + Math.sin(t) * 24);
+    }, 120);
+    return () => clearInterval(id);
+  }, []);
+  const p = (n: number) => String(n).padStart(2, '0');
+  const cd = `${p(Math.floor(sec / 3600))}:${p(Math.floor((sec % 3600) / 60))}:${p(sec % 60)}`;
+  const rows = [
+    ['Fajr', '04:34'], ['Sunrise', '05:48'], ['Dhuhr', '11:55'], ['Asr', '15:12', true], ['Maghrib', '17:59'], ['Isha', '19:08'],
+  ] as [string, string, boolean?][];
+  return (
+    <>
+      <StatusBar />
+      <div className={`flex items-center border-b ${BORDER} px-3 py-2`}>
+        <ArrowLeft className="h-4 w-4" />
+        <p className="ml-2 text-[12px] font-bold">Prayer Times</p>
+      </div>
+      <div className="px-3 pt-3">
+        <div className="rounded-xl border border-sand bg-emerald-50 p-3">
+          <div className="flex items-center justify-between">
+            <span className="flex items-center gap-1 text-[10px] font-medium text-emerald-800">
+              <MapPin className="h-3 w-3 text-emerald-700" /> Kota Jakarta, DKI Jakarta
+            </span>
+            <span className="text-[9px] font-bold text-emerald-800">CHANGE</span>
+          </div>
+          <div className="mt-2 flex items-center justify-between">
+            <div>
+              <p className={`text-[8px] uppercase tracking-wider ${MUTED}`}>Until next prayer</p>
+              <p className="text-[22px] font-bold tabular-nums leading-tight">{cd}</p>
+            </div>
+            <div className="flex flex-col items-center">
+              <Compass size={64} bearing={295} heading={heading} compact />
+              <p className="mt-1.5 text-[8px] font-semibold text-emerald-800">Qibla · 295°</p>
+              <p className={`text-[7px] ${MUTED}`}>Tap for details</p>
+            </div>
+          </div>
+        </div>
+        <div className="mb-1.5 mt-3 flex items-center justify-between">
+          <p className="text-[11px] font-bold">Today</p>
+          <p className={`text-[8px] ${MUTED}`}>Sun, 18 Oct • 6 Jumada I</p>
+        </div>
+        <div className="space-y-1.5">
+          {rows.map(([n, tm, next]) => (
+            <div
+              key={n}
+              className={`flex items-center justify-between rounded-lg border px-2.5 py-1.5 ${
+                next ? 'border-emerald-500 bg-emerald-600 text-white' : `${BORDER} bg-card`
+              }`}
+            >
+              <span className="flex items-center gap-1.5 text-[10px] font-semibold">
+                <Clock className={`h-3 w-3 ${next ? 'text-white' : 'text-emerald-700'}`} /> {n}
+              </span>
+              <span className={`text-[11px] font-bold ${next ? 'text-white' : 'text-emerald-700'}`}>{tm}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ---------- Dhikr detail + penghitung 3/33 ---------- */
+export function DhikrScreen() {
+  const [n, setN] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setN((x) => (x >= 33 ? 0 : x + 1)), 750); // sama dengan jeda 0,75 s di app
+    return () => clearInterval(id);
+  }, []);
+  const done = n >= 33;
+  return (
+    <>
+      <StatusBar />
+      <div className={`flex items-center justify-between border-b ${BORDER} px-3 py-2`}>
+        <ArrowLeft className="h-4 w-4" />
+        <p className="text-[11px] font-bold">Du&apos;a Detail</p>
+        <div className="w-4" />
+      </div>
+      <div className="px-3 pt-2.5">
+        <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[8px] font-bold text-emerald-800">Dhikr After Salah</span>
+        <p className="mt-1 text-[14px] font-bold leading-tight">Tasbih</p>
+        <div className={`mt-2 rounded-xl border ${BORDER} bg-[#fffcf5] p-2 text-center`}>
+          <p className="font-arabic text-lg leading-[1.9]" dir="rtl">سُبْحَانَ اللَّهِ</p>
+          <p className="text-[8px] italic text-emerald-700">Subḥānallāh</p>
+        </div>
+        <div className={`mt-2.5 rounded-2xl border ${BORDER} bg-card p-3`}>
+          <div className="flex items-center justify-between">
+            <span className="text-[8px] font-semibold uppercase tracking-wider text-emerald-800/70">Dhikr Counter</span>
+            <span className={`flex items-center gap-0.5 text-[8px] ${MUTED}`}><RotateCcw className="h-2.5 w-2.5" /> Reset</span>
+          </div>
+          <div className="mt-2 flex items-center justify-center gap-1.5">
+            <span className={`text-[8px] ${MUTED}`}>Target</span>
+            <span className={`rounded-full border px-3 py-1 text-[10px] font-bold ${BORDER} bg-card`}>3</span>
+            <span className="rounded-full border border-emerald-800 bg-emerald-800 px-3 py-1 text-[10px] font-bold text-white">33</span>
+          </div>
+          <div className="mt-2.5 flex justify-center">
+            <div
+              className={`flex h-[104px] w-[104px] flex-col items-center justify-center rounded-full border-4 ${
+                done ? 'border-emerald-700 bg-emerald-600 text-white' : 'border-emerald-600 bg-emerald-50'
+              }`}
+            >
+              <span className="text-[34px] font-bold leading-none">{n}</span>
+              <span className={`text-[10px] ${done ? 'text-emerald-100' : MUTED}`}>/ 33</span>
+            </div>
+          </div>
+          <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-gray-200">
+            <div className="h-full bg-emerald-600 transition-all duration-500" style={{ width: `${(n / 33) * 100}%` }} />
+          </div>
+          <p className={`mt-1.5 text-center text-[8px] ${MUTED}`}>Tap to count</p>
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ---------- Detail arah kiblat ---------- */
+export function QiblaScreen() {
+  const [heading, setHeading] = useState(250);
+  useEffect(() => {
+    let t = 0;
+    const id = setInterval(() => {
+      t += 0.1;
+      setHeading(295 + Math.sin(t) * 38 * Math.exp(-0.03 * t) * (t < 90 ? 1 : 0));
+    }, 100);
+    return () => clearInterval(id);
+  }, []);
+  const diff = Math.round(((295 - heading + 540) % 360) - 180);
+  const aligned = Math.abs(diff) <= 3;
+  const rows = [
+    ['Qibla Direction', '295.15° from North'],
+    ['Phone heading', `${Math.round(((heading % 360) + 360) % 360)}°`],
+    ['Sensor accuracy', 'High'],
+    ["Distance to the Ka'bah", '7.920 km'],
+    ['My location', '-6.2088, 106.8456'],
+  ];
+  return (
+    <>
+      <StatusBar />
+      <div className={`flex items-center border-b ${BORDER} px-3 py-2`}>
+        <ArrowLeft className="h-4 w-4" />
+        <p className="ml-2 flex-1 text-[12px] font-bold">Qibla Direction</p>
+      </div>
+      <div className="px-3 pt-2.5">
+        <p className={`text-center text-[11px] font-bold ${aligned ? 'text-emerald-700' : ''}`}>
+          {aligned ? 'Facing the Qibla' : diff > 0 ? `Turn right ${Math.abs(diff)}°` : `Turn left ${Math.abs(diff)}°`}
+        </p>
+        <div className="mt-2.5 flex justify-center">
+          <Compass size={176} bearing={295} heading={heading} />
+        </div>
+        <div className={`mt-3 rounded-xl border ${BORDER} bg-card px-3`}>
+          {rows.map(([a, b]) => (
+            <div key={a} className={`flex items-center justify-between border-b ${BORDER} py-1.5 text-[9px]`}>
+              <span className={MUTED}>{a}</span>
+              <span className="font-semibold">{b}</span>
+            </div>
+          ))}
+          <div className="flex items-center gap-1.5 py-1.5">
+            <Navigation className={`h-3 w-3 ${MUTED}`} />
+            <span className={`text-[8px] ${MUTED}`}>Bearing from Aladhan API</span>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ---------- Reading history ---------- */
+export function HistoryScreen() {
+  const rest = [
+    ['An-Nisa', 'Verse 58 of 176', '2 hours ago'],
+    ['Al-Kahf', 'Verse 10 of 110', 'Yesterday'],
+    ['Yasin', 'Verse 83 of 83', '3 days ago'],
+  ];
+  return (
+    <>
+      <StatusBar />
+      <div className="px-4 pt-2">
+        <p className="text-[16px] font-bold">History</p>
+        <p className={`text-[9px] ${MUTED}`}>Your reading history</p>
+      </div>
+      <div className="px-3 pt-3">
+        <div className="rounded-2xl bg-emerald-700 p-3.5 text-white">
+          <p className="flex items-center gap-1 text-[8px] font-semibold tracking-wide text-emerald-100">
+            <BookOpen className="h-3 w-3" /> CONTINUE READING
+          </p>
+          <p className="mt-1 text-[15px] font-bold">Al-Baqarah</p>
+          <p className="text-[9px] text-emerald-100">Verse 142 of 286 • 12 minutes ago</p>
+        </div>
+        <p className={`mb-2 mt-4 text-[8px] font-semibold tracking-wide ${MUTED}`}>EARLIER</p>
+        <div className="space-y-2">
+          {rest.map(([n, v, ts]) => (
+            <div key={n} className={`flex items-center justify-between rounded-xl border ${BORDER} bg-card p-2.5`}>
+              <div>
+                <p className="text-[11px] font-bold">{n}</p>
+                <p className={`text-[8.5px] ${MUTED}`}>{v} • {ts}</p>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Trash2 className="h-3 w-3 text-red-500" />
+                <ChevronRight className="h-3.5 w-3.5 text-emerald-700" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <TabBar active={2} />
     </>
   );
 }

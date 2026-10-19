@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
-import { Headphones, BookOpen, Clock, Palette, HeartPulse, Languages } from 'lucide-react';
+import {
+  Headphones, BookOpen, Clock, Palette, HeartPulse, Languages, Compass, Hand, History, WifiOff, Newspaper, Moon,
+} from 'lucide-react';
 
 const features = [
   {
@@ -17,6 +19,38 @@ const features = [
     icon: Clock,
     title: 'Prayer Times for Your City',
     description: 'Choose your city once and the dashboard shows the next prayer with a live countdown, plus dhikr and du’a after prayer.',
+  },
+  {
+    icon: Compass,
+    title: 'Real-Time Qibla Compass',
+    description:
+      'A live compass sits right in the prayer-time card, with the bearing from the Aladhan API. Open it for the full view: degrees, distance to the Ka’bah and sensor accuracy.',
+  },
+  {
+    icon: Hand,
+    title: 'Dhikr, Du’a & Counter',
+    description:
+      'Morning, evening and after-prayer dhikr with the hadith source, plus a tap counter for 3 or 33 that ignores accidental double taps.',
+  },
+  {
+    icon: History,
+    title: 'Reading Progress & History',
+    description: 'Your last surah and verse are saved, so you can continue exactly where you stopped.',
+  },
+  {
+    icon: Newspaper,
+    title: 'Health Journal',
+    description: 'A curated space that pairs Prophetic Medicine verses with wellness products and links.',
+  },
+  {
+    icon: Moon,
+    title: 'Light & Dark Themes',
+    description: 'Comfortable reading by day or night, with a layout that adapts from small phones to tablets.',
+  },
+  {
+    icon: WifiOff,
+    title: 'Works Offline',
+    description: 'Surahs, prayer times, dhikr and Prophetic Medicine are cached or bundled, so reading does not depend on a connection.',
   },
   {
     icon: Palette,
@@ -59,7 +93,7 @@ export default function Features() {
         </motion.div>
 
         {/* Feature cards */}
-        <div className="mt-14 grid gap-8 md:grid-cols-3">
+        <div className="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
