@@ -1,5 +1,5 @@
 // Backend Qiraat (Express). Atur VITE_API_URL saat build, mis. https://api.domainanda.com
-const BASE = ((import.meta.env.VITE_API_URL as string | undefined) ?? 'https://backend-qiraat.vercel.app').replace(/\/$/, '');
+const BASE = ((import.meta.env.VITE_API_URL as string | undefined) ?? 'https://api.alqiraat.app').replace(/\/$/, '');
 
 export async function postJson(path: string, body: unknown): Promise<void> {
   const res = await fetch(`${BASE}/api${path}`, {
