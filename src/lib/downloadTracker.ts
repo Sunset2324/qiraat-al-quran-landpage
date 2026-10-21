@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase';
+import { postJson } from '@/lib/api';
 
 function detectDeviceType(): string {
   const ua = navigator.userAgent;
@@ -8,28 +8,10 @@ function detectDeviceType(): string {
   return 'Desktop';
 }
 
-function hashIp(ip: string): string {
-  // Simple hash for dedup — not cryptographic, but sufficient for rough analytics
-  let hash = 0;
-  for (let i = 0; i < ip.length; i++) {
-    const char = ip.charCodeAt(i);
-    hash = (hash << 5) - hash + char;
-    hash |= 0;
-  }
-  return hash.toString(36);
-}
-
 export async function trackDownload(version: string): Promise<void> {
   try {
-    const { error } = await supabase.from('download_logs').insert({
-      device_type: detectDeviceType(),
-      user_agent: navigator.userAgent,
-      ip_hash: hashIp(navigator.userAgent.slice(0, 50)),
-      version,
-    });
-    if (error) {
-      console.error('Failed to log download:', error.message);
-    }
+    // Pencatatan tidak boleh menghalangi unduhan; kegagalan diabaikan.
+    await postJson('/site/download', { deviceType: detectDeviceType(), version });
   } catch (err) {
     console.error('Download tracking error:', err);
   }

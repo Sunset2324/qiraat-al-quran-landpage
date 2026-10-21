@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { MessageSquare, Send, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { postJson } from '@/lib/api';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
 export default function ContactForm() {
+  const [honeypot, setHoneypot] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
@@ -20,13 +21,12 @@ export default function ContactForm() {
     setErrorMsg('');
 
     try {
-      const { error } = await supabase.from('feedback').insert({
+      await postJson('/site/feedback', {
         name: name.trim(),
         email: email.trim(),
         message: message.trim(),
+        website: honeypot, // kolom jebakan bot (harus kosong)
       });
-
-      if (error) throw error;
 
       setStatus('success');
       setName('');
@@ -69,6 +69,17 @@ export default function ContactForm() {
           onSubmit={handleSubmit}
           className="mt-10 rounded-2xl border border-ink/8 bg-white/50 p-8 shadow-sm md:p-10"
         >
+          {/* Jebakan bot: disembunyikan dari manusia */}
+          <input
+            type="text"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            className="absolute -left-[9999px] h-0 w-0 opacity-0"
+          />
           <div className="grid gap-5 sm:grid-cols-2">
             {/* Name */}
             <div>
