@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Download } from 'lucide-react';
 import { trackDownload } from '@/lib/downloadTracker';
+import { DOWNLOAD_URL, APP_VERSION } from '@/lib/config';
 
 export default function DownloadCTA() {
   return (
@@ -29,17 +30,18 @@ export default function DownloadCTA() {
             </p>
 
             <a
-              href="/qiraat-al-quran-v1.0.0.apk"
-              download
-              onClick={() => trackDownload('v1.0.0')}
+              href={DOWNLOAD_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackDownload(APP_VERSION)}
               className="mt-8 inline-flex items-center gap-2.5 rounded-xl bg-cream px-8 py-4 text-base font-semibold text-emerald-dark shadow-lg transition-all duration-300 hover:bg-white hover:shadow-xl active:scale-[0.98]"
             >
               <Download className="h-5 w-5" />
-              Download APK v1.0.0
+              Get it on Google Play
             </a>
 
             <p className="mt-4 text-sm text-cream/60">
-              Free download · Android APK
+              Free · Android (Google Play)
             </p>
           </div>
         </motion.div>

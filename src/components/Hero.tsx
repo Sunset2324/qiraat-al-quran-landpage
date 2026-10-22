@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Download, ChevronDown, BookOpen } from 'lucide-react';
 import PhoneMockup from './PhoneMockup';
 import { trackDownload } from '@/lib/downloadTracker';
+import { DOWNLOAD_URL, APP_VERSION } from '@/lib/config';
 
 export default function Hero() {
   return (
@@ -44,13 +45,14 @@ export default function Hero() {
             {/* CTA buttons */}
             <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row lg:justify-start">
               <a
-                href="/qiraat-al-quran-v1.0.0.apk"
-                download
-                onClick={() => trackDownload('v1.0.0')}
+                href={DOWNLOAD_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackDownload(APP_VERSION)}
                 className="group flex w-full items-center justify-center gap-2.5 rounded-xl bg-emerald px-7 py-4 text-base font-semibold text-cream shadow-lg shadow-emerald/20 transition-all duration-300 hover:bg-emerald-dark hover:shadow-xl hover:shadow-emerald-dark/25 active:scale-[0.98] sm:w-auto"
               >
                 <Download className="h-5 w-5 transition-transform duration-300 group-hover:translate-y-0.5" />
-                Download APK v1.0.0
+                Get it on Google Play
               </a>
               <a
                 href="#features"
