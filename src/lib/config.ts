@@ -2,5 +2,5 @@
 //  - sekarang : link tester internal testing (hanya email yang terdaftar)
 //  - nanti    : link opt-in closed testing, lalu link Play Store produksi
 export const DOWNLOAD_URL =
-  'https://play.google.com/apps/internaltest/4974438438633834135';
+  'https://play.google.com/store/apps/details?id=app.qiraat.alquran';
 export const APP_VERSION = 'v1.0.0';
