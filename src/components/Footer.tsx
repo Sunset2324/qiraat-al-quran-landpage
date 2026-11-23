@@ -31,6 +31,16 @@ export default function Footer() {
             </a>
           </div>
 
+          {/* Legal */}
+          <nav aria-label="Legal" className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm">
+            <a href="/privacy/" className="text-muted underline-offset-4 transition-colors hover:text-emerald hover:underline">
+              Privacy Policy
+            </a>
+            <a href="/terms/" className="text-muted underline-offset-4 transition-colors hover:text-emerald hover:underline">
+              Terms of Use
+            </a>
+          </nav>
+
           {/* Copyright */}
           <p className="flex items-center gap-1.5 text-sm text-muted">
             <span>Copyright &copy; 2026 Qiraat-Al-Qur-an. Created with</span>
